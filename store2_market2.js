@@ -20,13 +20,13 @@ function maxNumCheck(max, input)
 
       var activity = {};
       var purchaseNum = activity.purchaseNum;
-      const minPri = 2000;
-      const matsuPri = 40;
-      const getMatsuPri = 1200;
-      const stromPro = 0.01;
-      const rate = 0.80;
-      const upperline = 100000000;
-      const underline = 12000;
+      const minPri = 2000;  //最低限わっちゃいけない額：おにぎり１０個分
+      const matsuPri = 40;  //松を売って嵐の時に出る利益
+      const getMatsuPri = 1200; //松の仕入れ値
+      const stromPro = 0.01;  //嵐の確率
+      const rate = 0.80;  //全資本あたりの投資率
+      const upperline = 100000000;  //これ超えたらおにぎりだけ売る
+      const underline = 12000;  //これわったらおにぎり売って凌ぐ
 
       maxNum = Math.floor((storeInfo.capitalStock - minPri)/(getMatsuPri - stromPro*matsuPri));
 
