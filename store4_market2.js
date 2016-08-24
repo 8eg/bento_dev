@@ -1,10 +1,4 @@
 (function() {
-function Initialize()
-{
-      activity.obentoId = 'ONIGIRI';
-      activity.purchaseNum = 20;
-      activity.salesPrice = 444;
-}
 
 function DecideObento(matsuCount,takeCount,umeCount,onigiriCount)
 {
@@ -28,19 +22,15 @@ function DecideObento(matsuCount,takeCount,umeCount,onigiriCount)
     obentoId = 'ONIGIRI';
     return obentoId;
   }
-
 }
 
   var myStore = ObentoMarket.Store.entry('ニッチくん',function(day) {
       var histories = ObentoMarket.getHistory();
-
-      var a = [];
       var matsuCount = 0;
       var takeCount = 0;
       var umeCount = 0;
       var onigiriCount = 0;
       var activity = {};
-      var obentoNames = ['MATSU', 'TAKE', 'UME', 'ONIGIRI'];
 
       if(day == 1)
       {
