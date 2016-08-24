@@ -20,13 +20,14 @@ function maxNumCheck(max, input)
 
       var activity = {};
       var purchaseNum = activity.purchaseNum;
-      const minPri = 2000;  //最低限わっちゃいけない額：おにぎり１０個分
-      const matsuPri = 40;  //松を売って嵐の時に出る利益
-      const getMatsuPri = 1200; //松の仕入れ値
-      const stromPro = 0.01;  //嵐の確率
-      const rate = 0.80;  //全資本あたりの投資率
-      const upperline = 100000000;  //これ超えたらおにぎりだけ売る
-      const underline = 12000;  //これわったらおにぎり売って凌ぐ
+      const minPri = 2000;
+      const matsuPri = 40;
+      const getMatsuPri = 1200;
+      const stromPro = 0.01;
+      const rate = 0.80;
+      const rand = 1 //Math.floor(Math.random()*6)+1; //1~7の整数型変数を生成
+      const upperline = 100000000;
+      const underline = 12000;
 
       maxNum = Math.floor((storeInfo.capitalStock - minPri)/(getMatsuPri - stromPro*matsuPri));
 
@@ -47,8 +48,32 @@ function maxNumCheck(max, input)
           }
         else if(storeInfo.capitalStock > upperline)
           {
-            activity.purchaseNum = Math.floor((storeInfo.capitalStock/200)*rate);
-            activity.obentoId = 'ONIGIRI';
+            if(rand == 1)
+            {
+              activity.purchaseNum = Math.floor((storeInfo.capitalStock/200)*rate);
+              activity.obentoId = 'ONIGIRI';
+            }
+            else
+            {
+            if(yesterday.weather == ObentoMarket.Weather.SHINE){
+            purchaseNumInput = Math.floor((storeInfo.capitalStock/1200)*rate);
+            activity.purchaseNum = maxNumCheck(maxNum,purchaseNumInput);
+            activity.obentoId = 'MATSU';
+            }else if (yesterday.weather == ObentoMarket.Weather.CLOUD){
+              purchaseNumInput = Math.floor((storeInfo.capitalStock/1000)*rate);
+              activity.purchaseNum = maxNumCheck(maxNum,purchaseNumInput);
+              activity.obentoId = 'TAKE';
+            }else if (yesterday.weather == ObentoMarket.Weather.RAIN){
+              purchaseNumInput = Math.floor((storeInfo.capitalStock/800)*rate);
+              activity.purchaseNum = maxNumCheck(maxNum,purchaseNumInput);
+              activity.obentoId = 'UME';
+            }
+            else
+            {
+              purchaseNumInput = Math.floor((storeInfo.capitalStock/1200)*rate);
+              activity.purchaseNum = maxNumCheck(maxNum,purchaseNumInput);
+              activity.obentoId = 'TAKE';
+            }
           }
         }
         else
