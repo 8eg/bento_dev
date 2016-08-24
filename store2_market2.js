@@ -25,7 +25,6 @@ function maxNumCheck(max, input)
       const getMatsuPri = 1200;
       const stromPro = 0.01;
       const rate = 0.80;
-      const rand = 1 //Math.floor(Math.random()*6)+1; //1~7の整数型変数を生成
       const upperline = 100000000;
       const underline = 12000;
 
@@ -48,32 +47,8 @@ function maxNumCheck(max, input)
           }
         else if(storeInfo.capitalStock > upperline)
           {
-            if(rand == 1)
-            {
-              activity.purchaseNum = Math.floor((storeInfo.capitalStock/200)*rate);
-              activity.obentoId = 'ONIGIRI';
-            }
-            else
-            {
-            if(yesterday.weather == ObentoMarket.Weather.SHINE){
-            purchaseNumInput = Math.floor((storeInfo.capitalStock/1200)*rate);
-            activity.purchaseNum = maxNumCheck(maxNum,purchaseNumInput);
-            activity.obentoId = 'MATSU';
-            }else if (yesterday.weather == ObentoMarket.Weather.CLOUD){
-              purchaseNumInput = Math.floor((storeInfo.capitalStock/1000)*rate);
-              activity.purchaseNum = maxNumCheck(maxNum,purchaseNumInput);
-              activity.obentoId = 'TAKE';
-            }else if (yesterday.weather == ObentoMarket.Weather.RAIN){
-              purchaseNumInput = Math.floor((storeInfo.capitalStock/800)*rate);
-              activity.purchaseNum = maxNumCheck(maxNum,purchaseNumInput);
-              activity.obentoId = 'UME';
-            }
-            else
-            {
-              purchaseNumInput = Math.floor((storeInfo.capitalStock/1200)*rate);
-              activity.purchaseNum = maxNumCheck(maxNum,purchaseNumInput);
-              activity.obentoId = 'TAKE';
-            }
+            activity.purchaseNum = Math.floor((storeInfo.capitalStock/200)*rate);
+            activity.obentoId = 'ONIGIRI';
           }
         }
         else
