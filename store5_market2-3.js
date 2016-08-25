@@ -28,42 +28,6 @@ function DecideObento(matsuCount,takeCount,umeCount,onigiriCount)
   }
 }
 
-
-function subminPri(product,otherPrice,obento,min){
-    minNow=min;
-    for (var i = 0; i < ids.length; i++) {
-        if(product[i]== obento){
-            if(minPri > otherPrice[i]){
-                minNow = otherPrice[i]
-            }
-            else{
-                minNow = minNow;
-            }
-        }
-    }
-    return minNow;
-}
-
-function SetObentoPrice(obentoName, obentoPrice, otherSalesPrice)
-{
-  switch(obentoName)
-  {
-    case 'MATSU':
-      obentoPrice[0] = otherSalesPrice;
-      break;
-    case 'TAKE':
-      obentoPrice[1] = otherSalesPrice;
-      break;
-    case 'UME':
-      obentoPrice[2] = otherSalesPrice;
-      break;
-    case 'ONIGIRI':
-      obentoPrice[3] = otherSalesPrice;
-      break;
-  }
-  return obentoPrice;
-}
-
 function DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
 {
   if(matsuCount == 0)
@@ -125,14 +89,13 @@ function secondChoice()
       var activity = {};
       var diff = [];
       var product = [];
-      var obentoPrice = [4000, 2500, 1600, 444];
       var minStore;
 
       if(day == 1)
       {
-      activity.obentoId = 'MATSU';
+      activity.obentoId = 'UME';
       activity.purchaseNum = 20;
-      activity.salesPrice = 3900;
+      activity.salesPrice = 1600;
       }
       else if(day >= 2)
       {
@@ -143,7 +106,6 @@ function secondChoice()
         var actual = yesterday.storeActuals[ids[i]];
         obentoName = actual.obentoId;
         otherSalesPrice = actual.salesPrice;
-        SetObentoPrice(obentoName, obentoPrice, otherSalesPrice);
         diff[i] = (standardPrice(obentoName) - otherSalesPrice)/standardPrice(obentoName);
         product[i] = obentoName;
         switch(obentoName)
@@ -167,20 +129,7 @@ function secondChoice()
         {
           activity.obentoId = DecideObento(matsuCount,takeCount,umeCount,onigiriCount);
         }
-
-        switch(activity.obentoId)
-        {
-          case 'MATSU': activity.salesPrice = obentoPrice[0];
-            break;
-          case 'TAKE': activity.salesPrice = obentoPrice[1];
-            break;
-          case 'UME': activity.salesPrice = obentoPrice[2];
-            break;
-          case 'ONIGIRI': activity.salesPrice = obentoPrice[3];
-            break;
-        }
-
-      //activity.salesPrice = DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
+      activity.salesPrice = DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
       activity.purchaseNum = 20;
       }
       return activity;

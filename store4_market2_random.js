@@ -22,22 +22,22 @@
      
      if(rand==1){
      activity.obentoId = 'ONIGIRI';
-     activity.purchaseNum= 10;
+     activity.purchaseNum= 30;
      activity.salesPrice= Math.floor(444*0.90);
      }
      else if(rand==2){
      activity.obentoId = 'MATSU';
-     activity.purchaseNum= 10;
+     activity.purchaseNum= 30;
      activity.salesPrice= Math.floor(4000*0.95);
      }
      else if(rand==3){
      activity.obentoId = 'TAKE';
-     activity.purchaseNum= 10;
+     activity.purchaseNum= 30;
      activity.salesPrice= Math.floor(2500*0.93);
      }
      else{
      activity.obentoId = 'UME';
-     activity.purchaseNum= 10;
+     activity.purchaseNum= 30;
      activity.salesPrice= Math.floor(1600*0.91);
      }
      return activity;
