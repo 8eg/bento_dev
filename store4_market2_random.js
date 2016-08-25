@@ -23,7 +23,7 @@
      if(rand==1){
      activity.obentoId = 'ONIGIRI';
      activity.purchaseNum= 10;
-     activity.salesPrice= Math.floor(444*0.98);
+     activity.salesPrice= Math.floor(444*0.90);
      }
      else if(rand==2){
      activity.obentoId = 'MATSU';

@@ -106,7 +106,7 @@ function secondChoice()
         var actual = yesterday.storeActuals[ids[i]];
         obentoName = actual.obentoId;
         otherSalesPrice = actual.salesPrice;
-        diff[i] = standardPrice(obentoName) - otherSalesPrice;
+        diff[i] = (standardPrice(obentoName) - otherSalesPrice)/standardPrice(obentoName);
         product[i] = obentoName;
         switch(obentoName)
           {
