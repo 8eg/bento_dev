@@ -26,7 +26,7 @@ function maxNumCheck(max, input)
       const stromPro = 0.01;
       const rate = 0.80;
       const rand = 1 //Math.floor(Math.random()*6)+1; //1~7の整数型変数を生成
-      const upperline = 100000000;
+      const upperline = 10000000000;  //100億円：：：おにぎり専売に移るラインは事実上廃止
       const underline = 12000;
 
       maxNum = Math.floor((storeInfo.capitalStock - minPri)/(getMatsuPri - stromPro*matsuPri));
@@ -44,13 +44,12 @@ function maxNumCheck(max, input)
           {
             activity.purchaseNum = Math.floor(storeInfo.capitalStock/200);
             activity.obentoId = 'ONIGIRI';
-            //return;
           }
         else if(storeInfo.capitalStock > upperline)
           {
             if(rand == 1)
             {
-              activity.purchaseNum = Math.floor((storeInfo.capitalStock/200)*rate);
+              activity.purchaseNum = Math.floor((storeInfo.capitalStock/200));
               activity.obentoId = 'ONIGIRI';
             }
             else

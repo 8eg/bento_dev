@@ -50,7 +50,7 @@ function maxNumCheck(max, input)
           {
             if(rand == 1)
             {
-              activity.purchaseNum = Math.floor((storeInfo.capitalStock/200)*rate);
+              activity.purchaseNum = Math.floor((storeInfo.capitalStock/200));
               activity.obentoId = 'ONIGIRI';
             }
             else

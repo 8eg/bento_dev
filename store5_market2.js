@@ -17,10 +17,14 @@ function DecideObento(matsuCount,takeCount,umeCount,onigiriCount)
     obentoId = 'UME';
     return obentoId;
   }
-  else
+  else if(onigiriCount == 0)
   {
     obentoId = 'ONIGIRI';
     return obentoId;
+  }
+  else
+  {
+    return;
   }
 }
 
@@ -48,19 +52,50 @@ function DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
   }
 }
 
-  var myStore = ObentoMarket.Store.entry('ニッチくん',function(day) {
+function standardPrice(obentoName)
+{
+  switch (obentoName){
+  case 'MATSU':
+    return 4000;
+    break;
+  case 'TAKE':
+    return 2500;
+    break;
+  case 'UME':
+    return 1600;
+    break;
+  case 'ONIGIRI':
+    return 444;
+    break;
+  }
+}
+
+function secondChoice()
+{
+  obentoName = actual.obentoId;
+  otherSalesPrice = actual.salesPrice;
+  diff[i] = standardPrice(obentoName) - otherSalesPrice;
+  product[i] = obentoName;
+  minStore = diff.indexOf(Math.min.apply(null,diff));
+
+}
+
+  var myStore = ObentoMarket.Store.entry('ニッチくん2',function(day) {
       var histories = ObentoMarket.getHistory();
       var matsuCount = 0;
       var takeCount = 0;
       var umeCount = 0;
       var onigiriCount = 0;
       var activity = {};
+      var diff = [];
+      var product = [];
+      var minStore;
 
       if(day == 1)
       {
-      activity.obentoId = 'ONIGIRI';
+      activity.obentoId = 'MATSU';
       activity.purchaseNum = 20;
-      activity.salesPrice = 444;
+      activity.salesPrice = 3900;
       }
       else if(day >= 2)
       {
@@ -70,6 +105,9 @@ function DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
         var storeInfo = ObentoMarket.Store.getById(ids[i]);
         var actual = yesterday.storeActuals[ids[i]];
         obentoName = actual.obentoId;
+        otherSalesPrice = actual.salesPrice;
+        diff[i] = standardPrice(obentoName) - otherSalesPrice;
+        product[i] = obentoName;
         switch(obentoName)
           {
             case 'MATSU': matsuCount++;
@@ -82,7 +120,15 @@ function DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
               break;
           }
         }
-      activity.obentoId = DecideObento(matsuCount,takeCount,umeCount,onigiriCount);
+        if(matsuCount!=0 && takeCount!=0 && umeCount!=0 && onigiriCount!=0)
+        {
+          minStore = diff.indexOf(Math.min.apply(null,diff));
+          activity.obentoId = product[minStore];
+        }
+        else
+        {
+          activity.obentoId = DecideObento(matsuCount,takeCount,umeCount,onigiriCount);
+        }
       activity.salesPrice = DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
       activity.purchaseNum = 20;
       }
