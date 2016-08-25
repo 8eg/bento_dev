@@ -2,14 +2,9 @@
 
 function DecideObento(matsuCount,takeCount,umeCount,onigiriCount)
 {
-  if(matsuCount == 0)
+  if(onigiriCount == 0)
   {
-    obentoId = 'MATSU';
-    return obentoId;
-  }
-  else if(takeCount == 0)
-  {
-    obentoId = 'TAKE';
+    obentoId = 'ONIGIRI';
     return obentoId;
   }
   else if(umeCount == 0)
@@ -17,15 +12,56 @@ function DecideObento(matsuCount,takeCount,umeCount,onigiriCount)
     obentoId = 'UME';
     return obentoId;
   }
-  else if(onigiriCount == 0)
+  else if(takeCount == 0)
   {
-    obentoId = 'ONIGIRI';
+    obentoId = 'TAKE';
+    return obentoId;
+  }
+  else if(matsuCount == 0)
+  {
+    obentoId = 'MATSU';
     return obentoId;
   }
   else
   {
     return;
   }
+}
+
+
+function subminPri(product,otherPrice,obento,min){
+    minNow=min;
+    for (var i = 0; i < ids.length; i++) {
+        if(product[i]== obento){
+            if(minPri > otherPrice[i]){
+                minNow = otherPrice[i]
+            }
+            else{
+                minNow = minNow;
+            }
+        }
+    }
+    return minNow;
+}
+
+function SetObentoPrice(obentoName, obentoPrice, otherSalesPrice)
+{
+  switch(obentoName)
+  {
+    case 'MATSU':
+      obentoPrice[0] = otherSalesPrice;
+      break;
+    case 'TAKE':
+      obentoPrice[1] = otherSalesPrice;
+      break;
+    case 'UME':
+      obentoPrice[2] = otherSalesPrice;
+      break;
+    case 'ONIGIRI':
+      obentoPrice[3] = otherSalesPrice;
+      break;
+  }
+  return obentoPrice;
 }
 
 function DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
@@ -70,17 +106,7 @@ function standardPrice(obentoName)
   }
 }
 
-function secondChoice()
-{
-  obentoName = actual.obentoId;
-  otherSalesPrice = actual.salesPrice;
-  diff[i] = standardPrice(obentoName) - otherSalesPrice;
-  product[i] = obentoName;
-  minStore = diff.indexOf(Math.min.apply(null,diff));
-
-}
-
-  var myStore = ObentoMarket.Store.entry('ニッチくん2',function(day) {
+  var myStore = ObentoMarket.Store.entry('ニッチくん3',function(day) {
       var histories = ObentoMarket.getHistory();
       var matsuCount = 0;
       var takeCount = 0;
@@ -89,6 +115,7 @@ function secondChoice()
       var activity = {};
       var diff = [];
       var product = [];
+      var obentoPrice = [4000, 2500, 1600, 444];
       var minStore;
 
       if(day == 1)
@@ -106,6 +133,7 @@ function secondChoice()
         var actual = yesterday.storeActuals[ids[i]];
         obentoName = actual.obentoId;
         otherSalesPrice = actual.salesPrice;
+        SetObentoPrice(obentoName, obentoPrice, otherSalesPrice);
         diff[i] = (standardPrice(obentoName) - otherSalesPrice)/standardPrice(obentoName);
         product[i] = obentoName;
         switch(obentoName)
@@ -129,7 +157,18 @@ function secondChoice()
         {
           activity.obentoId = DecideObento(matsuCount,takeCount,umeCount,onigiriCount);
         }
-      activity.salesPrice = DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
+
+        switch(activity.obentoId)
+        {
+          case 'MATSU': activity.salesPrice = obentoPrice[0];
+            break;
+          case 'TAKE': activity.salesPrice = obentoPrice[1];
+            break;
+          case 'UME': activity.salesPrice = obentoPrice[2];
+            break;
+          case 'ONIGIRI': activity.salesPrice = obentoPrice[3];
+            break;
+        }
       activity.purchaseNum = 20;
       }
       return activity;

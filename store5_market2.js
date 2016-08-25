@@ -1,5 +1,6 @@
 (function() {
 
+//ニッチなお弁当を次の購入弁当に決定する
 function DecideObento(matsuCount,takeCount,umeCount,onigiriCount)
 {
   if(matsuCount == 0)
@@ -28,22 +29,7 @@ function DecideObento(matsuCount,takeCount,umeCount,onigiriCount)
   }
 }
 
-
-function subminPri(product,otherPrice,obento,min){
-    minNow=min;
-    for (var i = 0; i < ids.length; i++) {
-        if(product[i]== obento){
-            if(minPri > otherPrice[i]){
-                minNow = otherPrice[i]
-            }
-            else{
-                minNow = minNow;
-            }
-        }
-    }
-    return minNow;
-}
-
+//前日の最低弁当取引価格を保存する
 function SetObentoPrice(obentoName, obentoPrice, otherSalesPrice)
 {
   switch(obentoName)
@@ -64,6 +50,7 @@ function SetObentoPrice(obentoName, obentoPrice, otherSalesPrice)
   return obentoPrice;
 }
 
+//今は使ってない
 function DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
 {
   if(matsuCount == 0)
@@ -88,6 +75,7 @@ function DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
   }
 }
 
+//標準価格を返す
 function standardPrice(obentoName)
 {
   switch (obentoName){
@@ -106,16 +94,6 @@ function standardPrice(obentoName)
   }
 }
 
-function secondChoice()
-{
-  obentoName = actual.obentoId;
-  otherSalesPrice = actual.salesPrice;
-  diff[i] = standardPrice(obentoName) - otherSalesPrice;
-  product[i] = obentoName;
-  minStore = diff.indexOf(Math.min.apply(null,diff));
-
-}
-
   var myStore = ObentoMarket.Store.entry('ニッチくん2',function(day) {
       var histories = ObentoMarket.getHistory();
       var matsuCount = 0;
@@ -125,7 +103,7 @@ function secondChoice()
       var activity = {};
       var diff = [];
       var product = [];
-      var obentoPrice = [4000, 2500, 1600, 444];
+      var obentoPrice = [4000, 2500, 1600, 444];  //最低取引価格を格納する配列
       var minStore;
 
       if(day == 1)
@@ -137,15 +115,16 @@ function secondChoice()
       else if(day >= 2)
       {
       var yesterday = histories[day - 2];
-      var ids = ObentoMarket.Store.getCompetitorIds(myStore.id);
+      var ids = ObentoMarket.Store.getCompetitorIds(myStore.id); //市場にいる他店舗のIDを全てゲット
       for (var i = 0; i < ids.length; i++) {
-        var storeInfo = ObentoMarket.Store.getById(ids[i]);
-        var actual = yesterday.storeActuals[ids[i]];
+        var storeInfo = ObentoMarket.Store.getById(ids[i]);   //IDを元に店情報を取得
+        var actual = yesterday.storeActuals[ids[i]];          //昨日の店情報ハッシュを取得
         obentoName = actual.obentoId;
-        otherSalesPrice = actual.salesPrice;
-        SetObentoPrice(obentoName, obentoPrice, otherSalesPrice);
-        diff[i] = (standardPrice(obentoName) - otherSalesPrice)/standardPrice(obentoName);
-        product[i] = obentoName;
+        otherSalesPrice = actual.salesPrice;                  //その店の昨日の販売価格
+        SetObentoPrice(obentoName, obentoPrice, otherSalesPrice); //最低取引価格を更新
+        diff[i] = (standardPrice(obentoName) - otherSalesPrice)/standardPrice(obentoName);  //標準価格と販売価格の差を算出
+        product[i] = obentoName;  //販売したおべんとうの名前を配列に格納
+        //お弁当が存在したら弁当カウントをあげる
         switch(obentoName)
           {
             case 'MATSU': matsuCount++;
@@ -158,16 +137,19 @@ function secondChoice()
               break;
           }
         }
+        //ニッチな弁当が存在しない時
         if(matsuCount!=0 && takeCount!=0 && umeCount!=0 && onigiriCount!=0)
         {
-          minStore = diff.indexOf(Math.min.apply(null,diff));
-          activity.obentoId = product[minStore];
+          minStore = diff.indexOf(Math.min.apply(null,diff));   //最も販売価格が標準化価格に近かった店の番号を取得
+          activity.obentoId = product[minStore]; //その店が売っていた弁当名を取得
         }
+        //ニッチな弁当が存在する時
         else
         {
+          //次に買う弁当はニッチな弁当にする
           activity.obentoId = DecideObento(matsuCount,takeCount,umeCount,onigiriCount);
         }
-
+        //買う弁当の価格を取得
         switch(activity.obentoId)
         {
           case 'MATSU': activity.salesPrice = obentoPrice[0];
@@ -179,9 +161,7 @@ function secondChoice()
           case 'ONIGIRI': activity.salesPrice = obentoPrice[3];
             break;
         }
-
-      //activity.salesPrice = DcidePrice(matsuCount,takeCount,umeCount,onigiriCount)
-      activity.purchaseNum = 20;
+      activity.purchaseNum = 20;  //購入数
       }
       return activity;
     }
