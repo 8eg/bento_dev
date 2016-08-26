@@ -105,6 +105,10 @@ function standardPrice(obentoName)
       var product = [];
       var obentoPrice = [4000, 2500, 1600, 444];  //最低取引価格を格納する配列
       var minStore;
+      const matsuBase = 3500;
+      const takeBase = 2300;
+      const umeBase = 1400;
+      const onigiriBase = 398;
 
       if(day == 1)
       {
@@ -152,14 +156,50 @@ function standardPrice(obentoName)
         //買う弁当の価格を取得
         switch(activity.obentoId)
         {
-          case 'MATSU': activity.salesPrice = obentoPrice[0];
+          case 'MATSU':
+          if(obentoPrice[0]> matsuBase)
+          {
+            activity.salesPrice = obentoPrice[0];
             break;
-          case 'TAKE': activity.salesPrice = obentoPrice[1];
+          }
+          else
+          {
+            activity.salesPrice = matsuBase;
             break;
-          case 'UME': activity.salesPrice = obentoPrice[2];
+          }
+          case 'TAKE':
+          if(obentoPrice[1]> takeBase)
+          {
+            activity.salesPrice = obentoPrice[1];
             break;
-          case 'ONIGIRI': activity.salesPrice = obentoPrice[3];
+          }
+          else
+          {
+            activity.salesPrice = takeBase;
             break;
+          }
+          case 'UME':
+          if(obentoPrice[2] > umeBase)
+          {
+            activity.salesPrice = obentoPrice[2];
+            break;
+          }
+          else
+          {
+            activity.salesPrice = umeBase;
+            break;
+          }
+          case 'ONIGIRI':
+          if(obentoPrice[3] > onigiriBase)
+          {
+            activity.salesPrice = obentoPrice[3];
+            break;
+          }
+          else
+          {
+            activity.salesPrice = onigiriBase;
+            break;
+          }
         }
       activity.purchaseNum = 20;  //購入数
       }

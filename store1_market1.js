@@ -21,7 +21,7 @@ function maxNumCheck(max, input)
       var activity = {};
       var purchaseNum = activity.purchaseNum;
       const minPri = 2000;
-      const matsuPri = 40;
+      const matsuPri = 40;  //嵐が来た時に松で出る利益
       const getMatsuPri = 1200;
       const stromPro = 0.01;
       const rate = 0.80;
