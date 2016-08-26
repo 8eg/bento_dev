@@ -44,6 +44,24 @@ function subminPri(product,otherPrice,obento,min){
     return minNow;
 }
 
+function SetDeadPri(obentoName)
+{
+  switch (obentoName){
+  case 'MATSU':
+    return 3000;
+    break;
+  case 'TAKE':
+    return 2000;
+    break;
+  case 'UME':
+    return 1333;
+    break;
+  case 'ONIGIRI':
+    return 400;
+    break;
+  }
+}
+
 function SetObentoPrice(obentoName, obentoPrice, otherSalesPrice)
 {
   switch(obentoName)
@@ -106,7 +124,7 @@ function standardPrice(obentoName)
   }
 }
 
-  var myStore = ObentoMarket.Store.entry('ニッチくん3',function(day) {
+  var myStore = ObentoMarket.Store.entry('ニッチくん最新',function(day) {
       var histories = ObentoMarket.getHistory();
       var matsuCount = 0;
       var takeCount = 0;
@@ -117,6 +135,7 @@ function standardPrice(obentoName)
       var product = [];
       var obentoPrice = [4000, 2500, 1600, 444];
       var minStore;
+      var enemyRate = [];
 
       if(day == 1)
       {
@@ -133,8 +152,10 @@ function standardPrice(obentoName)
         var actual = yesterday.storeActuals[ids[i]];
         obentoName = actual.obentoId;
         otherSalesPrice = actual.salesPrice;
+        enemyCapital = actual.capitalStock;
         SetObentoPrice(obentoName, obentoPrice, otherSalesPrice);
         diff[i] = (standardPrice(obentoName) - otherSalesPrice)/standardPrice(obentoName);
+        enemyRate[i] = actual.cost/actual.capitalStock;  //投資率
         product[i] = obentoName;
         switch(obentoName)
           {
@@ -148,14 +169,16 @@ function standardPrice(obentoName)
               break;
           }
         }
+        //ニッチな弁当がない場合
         if(matsuCount!=0 && takeCount!=0 && umeCount!=0 && onigiriCount!=0)
         {
           minStore = diff.indexOf(Math.min.apply(null,diff));
           activity.obentoId = product[minStore];
         }
-        else
+        else  //ニッチな弁当がある場合
         {
           activity.obentoId = DecideObento(matsuCount,takeCount,umeCount,onigiriCount);
+          SetDeadPri(activity.obentoId);  //損益分岐点の価格に設定
         }
 
         switch(activity.obentoId)
