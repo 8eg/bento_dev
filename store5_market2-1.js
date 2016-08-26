@@ -67,17 +67,42 @@ function SetObentoPrice(obentoName, obentoPrice, otherSalesPrice)
   switch(obentoName)
   {
     case 'MATSU':
+    if(otherSalesPrice < obentoPrice[0]){
       obentoPrice[0] = otherSalesPrice;
       break;
+      }
+    else{
+      obentoPrice[0] = obentoPrice[0];
+      break;
+      }
+    }
     case 'TAKE':
+    if(otherSalesPrice < obentoPrice[1]){
       obentoPrice[1] = otherSalesPrice;
       break;
+    }
+    else{
+      obentoPrice[1] = obentoPrice[1];
+      break;
+    }
     case 'UME':
+    if(otherSalesPrice < obentoPrice[2]){
       obentoPrice[2] = otherSalesPrice;
       break;
+    }
+    else{
+      obentoPrice[2] = obentoPrice[2];
+      break;
+    }
     case 'ONIGIRI':
+    if(otherSalesPrice < obentoPrice[3]){
       obentoPrice[3] = otherSalesPrice;
       break;
+    }
+    else{
+      obentoPrice[3] = obentoPrice[3];
+      break;
+    }
   }
   return obentoPrice;
 }
@@ -158,7 +183,7 @@ function standardPrice(obentoName)
             obentoName = actual.obentoId;
             otherSalesPrice = actual.salesPrice;
             enemyCapital = actual.capitalStock;
-            SetObentoPrice(obentoName, obentoPrice, otherSalesPrice);
+            SetObentoPrice(obentoName, obentoPrice, otherSalesPrice);  //やすかったら上書きする機能に帰る
             diff[i] = (standardPrice(obentoName) - otherSalesPrice)/standardPrice(obentoName);
             enemyRate[i] = actual.cost/actual.capitalStock;  //投資率
             product[i] = obentoName;
@@ -186,17 +211,54 @@ function standardPrice(obentoName)
               SetDeadPri(activity.obentoId);  //損益分岐点の価格に設定
             }
 
-            switch(activity.obentoId)
-            {
-              case 'MATSU': activity.salesPrice = obentoPrice[0];
-                break;
-              case 'TAKE': activity.salesPrice = obentoPrice[1];
-                break;
-              case 'UME': activity.salesPrice = obentoPrice[2];
-                break;
-              case 'ONIGIRI': activity.salesPrice = obentoPrice[3];
-                break;
-            }
+       //買う弁当の価格を取得
+        switch(activity.obentoId)
+        {
+          case 'MATSU':
+          if(obentoPrice[0]> matsuBase)
+          {
+            activity.salesPrice = obentoPrice[0];
+            break;
+          }
+          else
+          {
+            activity.salesPrice = matsuBase;
+            break;
+          }
+          case 'TAKE':
+          if(obentoPrice[1]> takeBase)
+          {
+            activity.salesPrice = obentoPrice[1];
+            break;
+          }
+          else
+          {
+            activity.salesPrice = takeBase;
+            break;
+          }
+          case 'UME':
+          if(obentoPrice[2] > umeBase)
+          {
+            activity.salesPrice = obentoPrice[2];
+            break;
+          }
+          else
+          {
+            activity.salesPrice = umeBase;
+            break;
+          }
+          case 'ONIGIRI':
+          if(obentoPrice[3] > onigiriBase)
+          {
+            activity.salesPrice = obentoPrice[3];
+            break;
+          }
+          else
+          {
+            activity.salesPrice = onigiriBase;
+            break;
+          }
+        }
           activity.purchaseNum = 20;
         }
         else  //収入が正の時
